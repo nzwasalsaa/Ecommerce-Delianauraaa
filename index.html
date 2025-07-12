@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toko Sembako Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f1f2f6, #dff9fb);
+      display: grid;
+      grid-template-columns: 240px 1fr 280px;
+      grid-template-rows: auto 1fr auto;
+      height: 100vh;
+      color: #333;
+    }
+
+    header {
+      grid-column: 1 / 4;
+      background: #0984e3;
+      color: white;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    header input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      width: 300px;
+      font-size: 12px;
+    }
+
+    header button {
+      background: white;
+      color: #0984e3;
+      border: none;
+      padding: 10px 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    header button:hover {
+      background: #dff9fb;
+    }
+
+    nav.sidebar {
+      background: #ffffff;
+      border-right: 1px solid #ccc;
+      font-size: 15px;
+      padding: 24px;
+    }
+
+    nav h2 {
+      font-size: 20px;
+      color: #0984e3;
+      margin-bottom: 20px;
+    }
+
+    nav ul li {
+      font-size: 14px;
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      background: #f1f2f6;
+      transition: 0.2s;
+      font-weight: 500;
+    }
+
+    nav ul li:hover {
+      background: #dfe6e9;
+    }
+
+    main {
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    main h1 {
+      font-size: 26px;
+      margin-bottom: 24px;
+      color: #2d3436;
+    }
+
+    #products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .product {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+
+    .product img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      aspect-ratio: 1 / 1;
+    }
+
+    .product h4 {
+      margin: 10px 0 6px;
+      font-size: 14px;
+    }
+
+    .price-line {
+      text-decoration: line-through;
+      font-size: 12px;
+      color: gray;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #00b894;
+      font-size: 15px;
+    }
+
+    .promo-label {
+      display: inline-block;
+      background-color: #fdcb6e;
+      color: #000;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      margin: 8px auto;
+      width: fit-content;
+    }
+
+    .spacer {
+      flex-grow: 1;
+    }
+
+    .product button {
+      margin-top: 12px;
+      padding: 10px 18px;
+      border: none;
+      background-color: #00b894;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .product button:hover {
+      background-color: #019875;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    aside#cart {
+      background: #ffffff;
+      border-left: 1px solid #ccc;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    #cart h3 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    #cart-items {
+      list-style: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    #cart-items li {
+      margin-bottom: 6px;
+      border-bottom: 1px dashed #ccc;
+      padding-bottom: 4px;
+    }
+
+    #total-price {
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 10px;
+      display: block;
+    }
+
+    #checkoutBtn {
+      background: #d63031;
+      border: none;
+      padding: 10px;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    #checkoutBtn:hover {
+      background: #c0392b;
+    }
+
+    #payment-method {
+      margin-top: 10px;
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      grid-column: 1 / 4;
+      background: #ffffff;
+      padding: 16px 32px;
+      border-top: 1px solid #ccc;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr auto;
+      }
+
+      nav.sidebar,
+      aside#cart {
+        display: none;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+      }
+
+      #products {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <input type="text" id="searchInput" placeholder="Cari produk..." oninput="searchProduct()">
+    <button id="loginBtn" onclick="login()">Login</button>
+  </header>
+
+  <nav class="sidebar">
+    <h2>Kategori</h2>
+    <ul style="list-style: none; padding-left: 0;">
+      <li onclick="filterCategory('semua')"><span class="emoji">🛒</span> Semua</li>
+      <li onclick="filterCategory('promo')"><span class="emoji">🔥</span> Promo & Bundling</li>
+      <li onclick="filterCategory('beras_gula_minyak')"><span class="emoji">🍚</span> Beras, Gula, Minyak</li>
+      <li onclick="filterCategory('sayur_buah')"><span class="emoji">🥦</span> Sayuran & Buah</li>
+      <li onclick="filterCategory('daging')"><span class="emoji">🥩</span> Daging</li>
+      <li onclick="filterCategory('mie_Tepung')"><span class="emoji">🍜</span> Mie Instan & Tepung</li>
+      <li onclick="filterCategory('telur_susu')"><span class="emoji">🥚</span> Telur & Susu</li>
+      <li onclick="filterCategory('lainnya')"><span class="emoji">📦</span> Lainnya</li>
+    </ul>    
+  </nav>  
+
+  <main>
+    <h1>Toko Sembako Naura</h1>
+    <div id="products"></div>
+  </main>
+
+  <aside id="cart">
+    <h3>Keranjang</h3>
+    <ul id="cart-items"></ul>
+    <span id="total-price">Rp 0</span>
+    <label for="alamat">Alamat:</label><br>
+    <textarea id="alamat" name="alamat" rows="3" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc;"></textarea>
+    <label for="telepon">Nomor Telepon:</label><br>
+    <input type="tel" id="telepon" name="telepon" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc;" placeholder="08xxxxxxxxx">
+    <label for="payment-method">Metode Pembayaran:</label>
+    <select id="payment-method">
+      <option value="">-- Pilih Metode --</option>
+      <option value="transfer">Transfer Bank (BCA, BRI, Mandiri)</option>
+      <option value="qris">QRIS (semua e-wallet)</option>
+      <option value="cod">COD (Cash on Delivery – Jabodetabek)</option>
+    </select>
+
+    <button id="checkoutBtn" onclick="checkout()">Checkout</button>
+  </aside>
+
+  <footer>
+    <p>&copy; 2025 Toko Sembako Naura | Semua Hak Dilindungi</p>
+  </footer>
+  <script>
+    const allProducts = [
+      { name: "Beras Sania 5 kg Premium Jawa Timur", category: "beras_gula_minyak", price: 75000, image: "BERAS 5 KG.JPG"},
+      { name: "Gula Rose Brand 1 Kg", category: "beras_gula_minyak", price: 18000, image: "GULA ROSE BRAND.PNG" },
+      { name: "Beras Raja Platinum 5 kg", category: "beras_gula_minyak", price: 81000, image: "BERAS RAJA PLATINUM.jpg"},
+      { name: "Galon Aqua 19 Liter", category: "lainnya", price: 21000, image: "GALON AQUAA.jpg"},
+      { name: "Galon Le Mineral 15 Liter", category: "lainnya", price: 22000, image: "GALON LE MINERALE.jpg"},
+      { name: "Beras Raja Ultima 5 Kg", category: "beras_gula_minyak", price: 83000, image: "BERAS RAJA ULTIMA.JPG"},
+      { name: "Mentega Blue Band Serbaguna", category: "beras_gula_minyak", price: 10000, image: "MENTEGA.JPG"},
+      { name: "Gas Bright 12 Kg", category: "lainnya", price: 150000, image: "GAS BRIGHT.jpg"},
+      { name: "Gula Tebu Premium 1 Kg", category: "beras_gula_minyak", price: 18200, image: "GULA.JPG" },
+      { name: "Mie Instan Dower Rasa Ayam", category: "mie_Tepung", price: 5800, image: "MIE CUP PEDES DOWER.jpg" },
+      { name: "Minyak Goreng Bimoli 2L", category: "beras_gula_minyak", price: 45000, image: "MINYAK GORENG BIMOLI.JPG" },
+      { name: "Gula Pasir Premium 1 Kg", category: "beras_gula_minyak", price: 18400, image: "PSM GULA.JPG"},
+      { name: "Gas Elpiji", category: "lainnya", price: 22000, image: "GAS ELPIJI.jpg"},
+      { name: "Minyak Goreng Sunco 2L", category: "beras_gula_minyak", price: 49000, image: "MINYAK GORENG SUNCO.JPG" },
+      { name: "Kangkung 1 Ikat", category: "sayur_buah", price: 6000, image: "SAYUR KANGKUNG.JPG" },
+      { name: "Minyak Filma Goreng 2L", category: "beras_gula_minyak", price: 40000, image: "MINYAK GORENG FILMA.jpg" },
+      { name: "Mie Instan Dower Rasa Tori Kara Ramen", category: "mie_Tepung", price: 6400, image: "MIE CUP TORI KARA.jpg" },
+      { name: "Brokoli Segar 300 Gram", category: "sayur_buah", price: 12000, image: "BROKOLI.JPG" },
+      { name: "Galon Oasis 19 Liter", category: "lainnya", price: 19000, image: "GALON OASIS.jpg"},
+      { name: "Mie Gaga Extra Pedas Goreng Chipotle", category: "mie_Tepung", price: 3700, image: "MIE GAGA GORENG CHIPUTLE.jpg" },
+      { name: "Mie Gaga Extra Pedas Goreng Lada Hitam", category: "mie_Tepung", price: 3700, image: "MIE GAGA GORENG LADA HITAM.jpg" },
+      { name: "Tepung Sajiku Golden Cripsy", category: "mie_Tepung", price: 9000, image: "TEPUNG GOLDEN CRIPSY.jpg" },
+      { name: "Selada 300 Gram", category: "sayur_buah", price: 8000, image: "SELADA.JPG" },
+      { name: "Apel Premium 1 Kg", category: "sayur_buah", price: 53700, image: "APEL PREMIUM.JPG" },
+      { name: "Ayam Broiler Utuh Fresh 800 - 900 Gram", category: "daging", price: 37500, image: "AYAM UTUH.JPG" },
+      { name: "Tepung Sajiku Serbaguna", category: "mie_Tepung", price: 9000, image: "TEPUNG SERBAGUNA.jpg" },
+      { name: "Bebek Peking Muda Utuh 1 Kg", category: "daging", price: 81500, image: "BEBEK.JPG" },
+      { name: "Daging Sapi Potong Rendang 500 Gram", category: "daging", price: 79500, image: "DAGING SAPI.JPG" },
+      { name: "Pear Xiang Lie 650 Gram", category: "sayur_buah", price: 38400, image: "PEAR.JPG" },
+      { name: "Jeruk Sunkist Valencia 1,1 Kg", category: "sayur_buah", price: 53500, image: "JERUK.JPG" },     
+      { name: "Telur Ayam Negeri 1kg", category: "telur_susu", price: 24900, image: "TELUR AYAM.jpg" },
+      { name: "Susu Cap Enak", category: "telur_susu", price: 13400, image: "SUSU CAP ENAK.jpg" },
+      { name: "Susu Indomilk Kental Manis", category: "telur_susu", price: 13900, image: "SUSU INDOMILK.jpg" },
+      { name: "Telur Bebek 1kg", category: "telur_susu", price: 27000, image: "TELUR BEBEK.jpg" },
+      { name: "Tepung Sajiku Bakwan Cripsy", category: "mie_Tepung", price: 8400, image: "TEPUNG BAKWAN CRIPSY.jpg" },
+      { name: "Telur Omega 1kg", category: "telur_susu", price: 30000, image: "TELUR OMEGA.WEbp" },
+      { name: "Susu Frisian Flag", category: "telur_susu", price: 21200, image: "SUSU FRISIAN FLAG.jpg" },
+      { name: "Susu Ultra Milk 1 Liter", category: "telur_susu", price: 18000, image: "SUSU ULTRA MILK.jpg" },
+      { name: "Mie Gelas Cup Rasa Baso Sapi", category: "mie_Tepung", price: 16000, image: "MIE GELAS.jpg" },
+      { name: "Tepung Terigu Kunci Biru 1 Kg", category: "mie_Tepung", price: 12500, image: "TEPUNG TERIGU.jpg" },
+      { name: "Tepung Terigu Sania 1 Kg", category: "mie_Tepung", price: 11700, image: "TEPUNG TERIGU SANIA.jpg" },
+      { name: "Mie Sedaap Cup", category: "mie_Tepung", price: 5700, image: "MIE CUP.jpg" },
+      { name: "Teh Cap Botol", category: "lainnya", price: 9000, image: "TEH CAP BOTOL.jpg"},
+      { name: "Coffee Good Day Cappucino", category: "lainnya", price: 5000, image: "COFFE GOOD DAY CAPPUCINO.jpg"},
+      { name: "Coffee Golda Dolce Latte", category: "lainnya", price: 4000, image: "COFFE GOLDA.jpg"},
+      { name: "Teh Botol Sosro 6 Botol", category: "lainnya", price: 18000, image: "TEH BOTOL SOSRO.jpg"},
+      { name: "Bundling Blue Band Margarine Serbaguna & Pronas Kornet Sapi", category: "Lainnya", price: 28000, promo: true, originalPrice: 30000, image: "Bundling 1.jpg" },
+      { name: "Bundling Emaku Lada Bubuk Botol & Topi Koki Beras Setra Ramos", category: "Lainnya", price: 118000, promo: true, originalPrice: 130000, image: "Bundling 2.jpg" },
+      { name: "Bundling MamyPoko Popok Bayi Junior Night & SunCo Minyak Goreng", category: "Lainnya", price: 406000, promo: true, originalPrice: 550000, image: "Bundling 3.jpg" },
+      { name: "Bundling HIT Pembasmi Nyamuk Aerosol Expert Fresh Citrus & Aerosol Expert Pink Blossom", category: "Lainnya", price: 83000, promo: true, originalPrice: 90000, image: "Bundling 3.jpg" },
+      { name: "Susu Greenfields 950 Ml", category: "lainnya", price: 23000, promo: true, originalPrice: 29000, image: "SUSU GREENFIELDS.jpg" },
+      { name: "Coffe Nescafe Mocha", category: "lainnya", price: 12000, promo: true, originalPrice: 15000, image: "COFFE NESCAFE MOCHA.jpg" }
+    ];
+    let cart = [];
+    let currentUser = null;
+    let filteredProducts = allProducts;
+
+    function renderProducts(products) {
+      const container = document.getElementById("products");
+      container.innerHTML = "";
+      products.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <h4>${product.name}</h4>
+          ${product.promo ? `<p class="price-line">Rp ${product.originalPrice.toLocaleString()}</p>` : ""}
+          <p class="price">Rp ${product.price.toLocaleString()}</p>
+          ${product.promo ? `<span class="promo-label">PROMO</span>` : ""}
+          <button onclick="addToCart('${product.name}')">+ Keranjang</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function filterCategory(category) {
+      filteredProducts = category === "semua"
+        ? allProducts
+        : allProducts.filter(p => category === "promo" ? p.promo : p.category === category);
+      renderProducts(filteredProducts);
+    }
+
+    function searchProduct() {
+      const keyword = document.getElementById("searchInput").value.toLowerCase();
+      const result = filteredProducts.filter(p => p.name.toLowerCase().includes(keyword));
+      renderProducts(result);
+    }
+
+    function addToCart(productName) {
+      const product = allProducts.find(p => p.name === productName);
+      const existing = cart.find(item => item.name === product.name);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartList = document.getElementById("cart-items");
+      const totalDisplay = document.getElementById("total-price");
+      cartList.innerHTML = "";
+      let total = 0;
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} x${item.qty} = Rp ${(item.qty * item.price).toLocaleString()}`;
+        total += item.qty * item.price;
+        cartList.appendChild(li);
+      });
+      totalDisplay.textContent = `Rp ${total.toLocaleString()}`;
+    }
+
+    function checkout() {
+      if (!currentUser) return alert("Silakan login terlebih dahulu.");
+      if (cart.length === 0) return alert("Keranjang masih kosong.");
+      alert(`Terima kasih ${currentUser}, pesanan Anda sedang diproses.`);
+      cart = [];
+      updateCart();
+    }
+
+    function login() {
+      const name = prompt("Masukkan nama Anda:");
+      if (name) {
+        currentUser = name;
+        document.getElementById("loginBtn").textContent = name;
+      }
+    }
+    function showTab(tabId) {
+      const tabs = document.querySelectorAll('.tab-button');
+      const contents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(btn => btn.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    function checkout() {
+      const paymentMethod = document.getElementById("payment-method").value;
+
+      if (!currentUser) {
+        alert("Silakan login terlebih dahulu.");
+        return;
+      }
+
+      if (cart.length === 0) {
+        alert("Keranjang masih kosong.");
+        return;
+      }
+
+      if (!paymentMethod) {
+        alert("Silakan pilih metode pembayaran.");
+        return;
+      }
+
+      alert(`Terima kasih ${currentUser}, pesanan Anda sedang diproses.\nMetode pembayaran: ${paymentMethod.toUpperCase()}`);
+      cart = [];
+      updateCart();
+      document.getElementById("payment-method").value = "";
+    }
+  </script>
+</body>
+</html>
